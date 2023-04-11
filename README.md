@@ -68,3 +68,156 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+//code
+import React, { useState } from 'react'
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { Button } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+
+
+const initialValues ={
+    firstName:'',
+    lastName:'',
+    gender:'',
+    branch:'',
+    dateOfBirth:'',
+    mobile:'',
+    email:'',
+    address:'',
+    profile:''
+}
+function AddStudent() {
+ const [student, setStudent] = useState(initialValues);
+ const [errors,setErrors] = useState({});
+ const error1=null
+
+ const validate =() =>{
+  let temp = {}
+  temp.firstName = student.firstName ? "":"This field is required."
+  temp.branch = student.branch.length !== 0? "":"This field is required."
+  temp.mobile = student.mobile.length === 14 ? "":"Mobile number should be 14 characters."
+  temp.email = (/$^|.+@.+..+/).test(student.email) ? " ":"Email is not valid."
+  setErrors({
+    ...temp
+  })
+
+  return Object.values(temp).every(x => x ==="")
+ }
+
+  const InputHandler = (e) => {
+  setStudent({...student,[e.target.name]:e.target.value})
+  }
+
+  const onSubmitHandler=(e)=>{
+
+  console.log(student);
+  e.preventDefault();
+ if(validate())
+ window.alert('testing...')
+  }
+  return (
+    <div>
+        <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <div>
+        <TextField
+          variant="outlined"
+          label="First Name"
+          name="firstName"
+          value={student.firstName}
+          placeholder="Enter first name"
+          onChange={(e)=>InputHandler(e)}
+          error={errors.firstName}
+          {...(error1 & {error1:true, helperText:error1})}
+        />
+        <TextField
+          variant="outlined"
+          label="Last Name"
+          name="lastName"
+          value={student.lastName}
+          placeholder="Enter last name"
+          onChange={(e)=>InputHandler(e)}
+        />
+        <FormControl>
+      <FormLabel>Gender</FormLabel>
+      <RadioGroup
+        row
+        aria-labelledby="demo-row-radio-buttons-group-label"
+        label="Gender"
+        name="gender"
+        value={student.gender}
+        onChange={(e)=>InputHandler(e)}
+      >
+        <FormControlLabel value="F" control={<Radio />} label="Female" />
+        <FormControlLabel value="M" control={<Radio />} label="Male" />
+        <FormControlLabel value="O" control={<Radio />} label="Other" />
+      </RadioGroup>
+    </FormControl>
+    <FormControl fullWidth>
+  <InputLabel>Branch</InputLabel>
+  <Select
+    name='branch'
+    value={student.branch}
+    label="Branch"
+    onChange={(e)=>InputHandler(e)}
+  >
+    
+    <MenuItem value="ECE">ECE</MenuItem>
+    <MenuItem value="CSE">CSE</MenuItem>
+    <MenuItem value="EEE">EEE</MenuItem>
+    <MenuItem value="IT">IT</MenuItem>
+    <MenuItem value="ME">ME</MenuItem>
+  </Select>
+</FormControl>
+        <TextField
+          variant="outlined"
+          label="Mobile"
+          name="mobile"
+          value={student.mobile}
+          placeholder="Enter Mobile"
+          onChange={(e)=>InputHandler(e)}
+          error={errors.mobile}
+          {...(error1 & {error1:true, helperText:error1})}
+        />
+        <TextField
+          variant="outlined"
+          label="Email"
+          name="email"
+          value={student.email}
+          placeholder="Enter Email"
+          onChange={(e)=>InputHandler(e)}
+          error={errors.email}
+          {...(error1 & {error1:true, helperText:error1})}
+        />
+        <TextField
+          variant="outlined"
+          label="Address"
+          name="address"
+          value={student.address}
+          placeholder="Enter Address"
+          onChange={(e)=>InputHandler(e)}
+        />
+        <Button variant='contained' onClick={(e)=>{onSubmitHandler(e)}}>Save</Button>
+      </div>
+    </Box>
+    </div>
+  )
+}
+
+export default AddStudent
